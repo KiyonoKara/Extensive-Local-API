@@ -1,7 +1,7 @@
 import * as http from "http";
 import { setHeaders } from "../util/Headers";
 import { STATUS_OK } from "../util/constants/StatusPayloads";
-import "../util/StringFabrication";
+//import "../util/StringFabrication";
 
 export const server: http.Server = http.createServer((request: http.IncomingMessage, response: http.ServerResponse) => {
     if (request.url === "/") {
@@ -11,6 +11,6 @@ export const server: http.Server = http.createServer((request: http.IncomingMess
                 "date": new Date().toUTCString()
             });
         response.writeHead(response.statusCode, response.statusMessage);
-        response.end(STATUS_OK.stringify(), 'utf-8');
+        response.end(STATUS_OK, 'utf-8');
     }
 });
