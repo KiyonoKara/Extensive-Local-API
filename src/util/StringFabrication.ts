@@ -6,10 +6,10 @@ declare global {
     }
 }
 
-Object.prototype.stringify = function() {
+Object.prototype.stringify = function(): string {
     try {
         return JSON.stringify(this, null, 3);
     } catch {
-        return this;
+        return <string>this;
     }
 };
