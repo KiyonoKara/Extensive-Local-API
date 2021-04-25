@@ -1,0 +1,11 @@
+{
+  "name": "extensive-local-api",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "bin": "src/index.ts",
+  "scripts": {
+    "start": "node --require ts-node/register src/index.ts"
+  },
+  "dependencies": {
+  }
+}
