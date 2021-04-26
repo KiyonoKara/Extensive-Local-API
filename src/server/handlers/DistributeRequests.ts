@@ -1,7 +1,10 @@
 import * as fs from "fs";
 import { API } from "./API";
+import * as Constants from "../../util/constants/IndexConstants";
+import { KeyObject } from "../../util/Interfaces";
 
-export const distribute = (request, response, options?) => {
+export const distribute = (request, response, options: KeyObject = {}) => {
+    options.Constants = Constants;
     fs.readdirSync('src/api')
         .forEach(file => {
             if (file.endsWith(".ts")) {
