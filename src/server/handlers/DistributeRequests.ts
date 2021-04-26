@@ -6,7 +6,7 @@ export const distribute = (request, response, options?) => {
         .forEach(file => {
             if (file.endsWith(".ts")) {
                 const component: string = file.split('.').slice(0, -1).join('.');
-                API[component].run(request, response, options ? options : {});
+                API[component]?.run(request, response, options ? options : {});
             }
     });
 };
