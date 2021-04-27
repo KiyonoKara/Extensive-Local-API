@@ -1,10 +1,10 @@
 import * as fs from "fs";
 import { API } from "./API";
-import * as Utils from "../../util/IndexUtil";
+import * as Utilities from "../../util/IndexUtil";
 import { KeyObject } from "../../util/Interfaces";
 
 export const distribute = (request, response, options: KeyObject = {}) => {
-    options.Utils = Utils;
+    options.utilities = Utilities;
     fs.readdirSync('src/api')
         .forEach(file => {
             if (file.endsWith(".ts")) {
