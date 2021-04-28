@@ -10,13 +10,15 @@ export const handleMethod = function(request: http.IncomingMessage, response: ht
     } if (finalMethod === Methods.POST) {
         handlePOST(request, response, Methods.POST, options);
     } if (finalMethod === Methods.HEAD) {
-
+        handleHEAD(request, response, Methods.HEAD, options);
+    } if (finalMethod === Methods.DELETE) {
+        handleDELETE(request, response, Methods.DELETE, options);
     }
 }
 
 export const handleGET = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "GET", options: Partial<DataOptions> = {}) {
-    if (method !== Methods.GET) return;
     response.writeHead(200, { "Content-Type": Specifications.APPLICATION_JSON_CT });
+    if (method !== Methods.GET) return;
     if (options.data) {
         return response.end(options.data.stringify());
     }
@@ -105,8 +107,16 @@ export const openPOSTBody = function(request: http.IncomingMessage, response: ht
     });
 };
 
-export const handleHEAD = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "POST", options: Partial<DataOptions> = {}) {
+export const handleDELETE = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "DELETE", options: Partial<DataOptions> = {}) {
+    response.writeHead(200, { "Content-Type": Specifications.APPLICATION_JSON_CT });
+    if (method !== Methods.DELETE) return;
+    if (options.data) {
+        return response.end(options.data.stringify());
+    }
+}
+
+export const handleHEAD = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "HEAD", options: Partial<DataOptions> = {}) {
+    response.writeHead(200, { "Content-Type": Specifications.APPLICATION_JSON_CT });
     if (method !== Methods.HEAD) return;
-    response.writeHead(200, { "Content-Type": Specifications.TEXT_PLAIN_CT });
-    response.end("Success");
+    return response.end(options?.data.stringify() ?? { success: `${method} request was successful.` }.stringify());
 };
