@@ -28,29 +28,8 @@ export const sendWrittenOutput = function(request: http.IncomingMessage, respons
 }
 
 export const handlePOST = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "POST", options: Partial<DataOptions> = {}) {
-  if (method !== Methods.POST) return;
-  response.writeHead(200, { "Content-Type": Specifications.APPLICATION_JSON_CT });
-
-  let incomingBody = [] as Buffer[];
-
-  request.on('data', chunk => incomingBody += chunk);
-  request.on('end', () => {
-      if (incomingBody.length > 1e7) {
-          return response.end({ error: http.STATUS_CODES[413] }.stringify());
-      }
-      const str = Buffer.concat(incomingBody).toString();
-      let json;
-      if (options.isJSON) {
-          try {
-              json = JSON.parse(str);
-              return response.end((options.data ?? json).stringify());
-          } catch {
-              return response.end({ error: http.STATUS_CODES[400] }.stringify());
-          }
-      } else {
-          return response.end((options.data.stringify() ?? { 200: "OK" }.stringify()));
-      }
-  });
+    if (method !== Methods.POST) return;
+    return defaultHandler(request, response, options);
 };
 
 export const writtenBody = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "POST", options: Partial<DataOptions> = {}) {
@@ -67,30 +46,7 @@ export const writtenBody = function(request: http.IncomingMessage, response: htt
                 try {
                     resolve(JSON.parse(str));
                 } catch {
-                    resolve(str);
-                }
-            } else {
-                resolve(str);
-            }
-        });
-        request.on('error', error => reject({ error: error }));
-    });
-};
-
-export const openPOSTBody = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "POST", options: Partial<DataOptions> = {}) {
-    if (method !== Methods.POST) return;
-    let incomingBody = [] as Buffer[];
-    request.on('data', chunk => incomingBody.push(chunk));
-    return new Promise((resolve, reject) => {
-        request.on('end', () => {
-            if (incomingBody.length > 1e7) {
-                return response.end({ error: http.STATUS_CODES[413] }.stringify());
-            }
-            const str = Buffer.concat(incomingBody).toString();
-            if (options.isJSON) {
-                try {
-                    resolve(JSON.parse(str));
-                } catch {
+                    response.end({ error: http.STATUS_CODES[400] }.stringify());
                     resolve(str);
                 }
             } else {
@@ -106,6 +62,16 @@ export const handleDELETE = function(request: http.IncomingMessage, response: ht
     return defaultHandler(request, response, options);
 }
 
+export const handlePUT = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "PUT", options: Partial<DataOptions> = {}) {
+    if (method !== Methods.PUT) return;
+    return defaultHandler(request, response, options);
+};
+
+export const handlePATCH = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "PATCH", options: Partial<DataOptions> = {}) {
+    if (method !== Methods.PATCH) return;
+    return defaultHandler(request, response, options);
+};
+
 export const handleHEAD = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "HEAD", options: Partial<DataOptions> = {}) {
     if (method !== Methods.HEAD) return;
     return defaultHandler(request, response, options);
@@ -115,5 +81,7 @@ const methodHandlers = {
     GET: handleGET,
     POST: handlePOST,
     DELETE: handleDELETE,
+    PUT: handlePUT,
+    PATCH: handlePATCH,
     HEAD: handleHEAD
 };
