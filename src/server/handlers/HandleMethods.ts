@@ -5,23 +5,17 @@ import { DataOptions } from "../../util/Interfaces";
 
 export const handleMethod = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "GET", options: Partial<DataOptions> = {}) {
     const finalMethod = method.toUpperCase();
-    if (finalMethod === Methods.GET) {
-        handleGET(request, response, Methods.GET, options);
-    } if (finalMethod === Methods.POST) {
-        handlePOST(request, response, Methods.POST, options);
-    } if (finalMethod === Methods.HEAD) {
-        handleHEAD(request, response, Methods.HEAD, options);
-    } if (finalMethod === Methods.DELETE) {
-        handleDELETE(request, response, Methods.DELETE, options);
-    }
-}
+    if (Methods[finalMethod] && methodHandlers[finalMethod]) methodHandlers[finalMethod](request, response, Methods[finalMethod], options);
+};
+
+export const defaultHandler = function(request: http.IncomingMessage, response: http.ServerResponse, options: Partial<DataOptions> = {}) {
+    response.writeHead(200, { "Content-Type": Specifications.APPLICATION_JSON_CT });
+    return response.end((options?.data ?? { message: `${request.method} request was successful.` }).stringify());
+};
 
 export const handleGET = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "GET", options: Partial<DataOptions> = {}) {
-    response.writeHead(200, { "Content-Type": Specifications.APPLICATION_JSON_CT });
     if (method !== Methods.GET) return;
-    if (options.data) {
-        return response.end(options.data.stringify());
-    }
+    return defaultHandler(request, response, options);
 };
 
 export const sendWrittenOutput = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "POST", options: Partial<DataOptions> = {}) {
@@ -108,15 +102,18 @@ export const openPOSTBody = function(request: http.IncomingMessage, response: ht
 };
 
 export const handleDELETE = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "DELETE", options: Partial<DataOptions> = {}) {
-    response.writeHead(200, { "Content-Type": Specifications.APPLICATION_JSON_CT });
     if (method !== Methods.DELETE) return;
-    if (options.data) {
-        return response.end(options.data.stringify());
-    }
+    return defaultHandler(request, response, options);
 }
 
 export const handleHEAD = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "HEAD", options: Partial<DataOptions> = {}) {
-    response.writeHead(200, { "Content-Type": Specifications.APPLICATION_JSON_CT });
     if (method !== Methods.HEAD) return;
-    return response.end(options?.data.stringify() ?? { success: `${method} request was successful.` }.stringify());
+    return defaultHandler(request, response, options);
+};
+
+const methodHandlers = {
+    GET: handleGET,
+    POST: handlePOST,
+    DELETE: handleDELETE,
+    HEAD: handleHEAD
 };
