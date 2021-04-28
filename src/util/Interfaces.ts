@@ -3,5 +3,6 @@ export interface KeyObject {
 }
 
 export interface DataOptions {
-    data?: object
+    data?: object,
+    isJSON?: boolean
 }
