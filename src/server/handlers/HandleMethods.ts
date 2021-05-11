@@ -2,6 +2,7 @@ import * as http from "http";
 import { Methods, Specifications } from "../../util/constants/IndexConstants";
 import "../../util/StringFabrication";
 import { DataOptions } from "../../util/Interfaces";
+import { setHeaders } from "../../util/Headers";
 
 export const handleMethod = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "GET", options: Partial<DataOptions> = {}) {
     const finalMethod = method.toUpperCase();
@@ -74,7 +75,7 @@ export const handlePATCH = function(request: http.IncomingMessage, response: htt
 
 export const handleHEAD = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "HEAD", options: Partial<DataOptions> = {}) {
     if (method !== Methods.HEAD) return;
-    return defaultHandler(request, response, options);
+    return setHeaders(options.headers);
 };
 
 const methodHandlers = {
