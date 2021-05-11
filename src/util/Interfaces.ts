@@ -4,5 +4,6 @@ export interface KeyObject {
 
 export interface DataOptions {
     data?: object,
-    isJSON?: boolean
+    isJSON?: boolean,
+    headers?: any
 }
