@@ -75,7 +75,8 @@ export const handlePATCH = function(request: http.IncomingMessage, response: htt
 
 export const handleHEAD = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "HEAD", options: Partial<DataOptions> = {}) {
     if (method !== Methods.HEAD) return;
-    return setHeaders(options.headers);
+    setHeaders(options.headers);
+    return response.end();
 };
 
 const methodHandlers = {
