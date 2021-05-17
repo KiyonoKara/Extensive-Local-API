@@ -2,6 +2,7 @@ import * as Home from "../../api/Home";
 import * as Echo from "../../api/Echo";
 import * as ReadOnly from "../../api/ReadOnly";
 import * as Base64POST from "../../api/Base64POST";
+import * as Payload from "../../api/Payload";
 
 export const API = {
     Home: {
@@ -19,5 +20,9 @@ export const API = {
     Base64POST: {
         main: Base64POST,
         path: "/base64"
+    },
+    Payload: {
+        main: Payload,
+        path: "/payload"
     }
 };
