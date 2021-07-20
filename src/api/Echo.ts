@@ -12,7 +12,7 @@ export const run = (request, response, options) => {
                     HandleMethods.sendWrittenOutput(request, response, request.method, { data: { success: `${request.method} request was successful.`, message: data['message'] }, isJSON: true });
                 }
             });
-        } else if (request.method === Methods.HEAD) {
+        } else if (request.method === Methods.HEAD || request.method === Methods.OPTIONS) {
             let headers: KeyObject = {};
             let count = 0;
             let tempArray = [];
