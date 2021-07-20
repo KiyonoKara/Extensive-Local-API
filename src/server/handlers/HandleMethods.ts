@@ -79,6 +79,12 @@ export const handleHEAD = function(request: http.IncomingMessage, response: http
     return response.end();
 };
 
+export const handleOPTIONS = function(request: http.IncomingMessage, response: http.ServerResponse, method: string = "OPTIONS", options: Partial<DataOptions> = {}) {
+    if (method !== Methods.OPTIONS) return;
+    setHeaders(options.headers);
+    return response.end();
+}
+
 const methodHandlers = {
     GET: handleGET,
     POST: handlePOST,
