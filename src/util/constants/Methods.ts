@@ -4,8 +4,9 @@ const
     DELETE: string = "DELETE",
     PUT: string = "PUT",
     PATCH: string = "PATCH",
-    HEAD: string = "HEAD";
+    HEAD: string = "HEAD",
+    OPTIONS: string = "OPTIONS";
 
 export {
-    GET, POST, DELETE, PUT, PATCH, HEAD
+    GET, POST, DELETE, PUT, PATCH, HEAD, OPTIONS
 };
